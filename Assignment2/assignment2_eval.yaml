@@ -1,0 +1,268 @@
+- init:
+    run: rm -f hw2
+    blocker: true
+
+- build:
+    run: g++ -Wall -Werror src/main.cpp src/Robot.cpp src/CommandCenter.cpp -I include -o assignment2
+    exit: 0
+    points: 20
+    blocker: true
+
+- case1: 
+    run: valgrind --leak-check=summary ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "5"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "5"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-5|exp-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-10|mnr-010)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+
+    - expect: "(?i)Farewell Chief!(.*)([1-9]\\d*) allocs(.*)"
+
+
+    
+    exit: 0
+    points: 20
+
+- case2: 
+    run: ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "5"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "5"
+
+    - expect: '(?i)explorerCrew Size:5(.*)minerCrew Size:5(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed: 2.3746(.*)Durability: 3(.*)ManufactureCost: 3000(.*)MaintenanceCost: 189.506(.*)Can Move(.*)explored area: 0(.*)Name: (exp-2|exp-02)(.*)Speed: 2.16748(.*)Durability: 5(.*)ManufactureCost: 3000(.*)MaintenanceCost: 207.615(.*)Can Move(.*)explored area: 0(.*)Name: (exp-3|exp-03)(.*)Speed: 2.33678(.*)Durability: 5(.*)ManufactureCost: 3000(.*)MaintenanceCost: 192.573(.*)Can Move(.*)explored area: 0(.*)Name: (exp-4|exp-04)(.*)Speed: 2.17887(.*)Durability: 4(.*)ManufactureCost: 3000(.*)MaintenanceCost: 206.529(.*)Can Move(.*)explored area: 0(.*)Name: (exp-5|exp-05)(.*)Speed: 2.34984(.*)Durability: 5(.*)ManufactureCost: 3000(.*)MaintenanceCost: 191.502(.*)Can Move(.*)explored area: 0(.*)Name: (mnr-6|mnr-06)(.*)Speed: 1.49684(.*)Durability: 2(.*)ManufactureCost: 5000(.*)MaintenanceCost: 501.055(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed: 1.04272(.*)Durability: 2(.*)ManufactureCost: 5000(.*)MaintenanceCost: 719.275(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed: 1.47942(.*)Durability: 3(.*)ManufactureCost: 5000(.*)MaintenanceCost: 506.954(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed: 1.05748(.*)Durability: 1(.*)ManufactureCost: 5000(.*)MaintenanceCost: 709.236(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-10|mnr-010)(.*)Speed: 1.23386(.*)Durability: 2(.*)ManufactureCost: 5000(.*)MaintenanceCost: 607.85(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost: 40000(.*)Total maintenance cost: 0(.*)Choice:'
+    - send: "8"
+
+    - expect: _EOF_
+    
+    exit: 0
+    points: 5
+
+- case3: 
+    run: ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "4"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "4"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "3"
+    - expect: '(?i)Type:'
+    - send: "miner"
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8" 
+
+    - expect: _EOF_
+    exit: 0
+    points: 15
+- case4: 
+    run: ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "4"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "4"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "3"
+    - expect: '(?i)Type:'
+    - send: "miner"
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "3" 
+    - expect: '(?i)Type:'
+    - send: "miner"
+
+    - expect: '(?i)This robot cannot be added, check maximum size of the crew(.*)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+
+    - expect: _EOF_
+    exit: 0
+    points: 2.5
+
+- case5: 
+    run: ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "2"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "2"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "2"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "2"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (mnr-3|mnr-03)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-4|mnr-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "4"
+    - expect: '(?i)Enter the name of the robot that you want to disassemble'
+    - send: "mnr-4"
+    - expect: '(?i)(((mnr-4|mnr-04): (.*)Goodbye(.*)explorerCrew Size:(.*)minerCrew Size:)|(explorerCrew Size:(.*)minerCrew Size:))(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (mnr-3|mnr-03)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+
+
+    - expect: _EOF_
+    exit: 0
+    points: 15
+
+- case6: 
+    run: ./assignment2
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "2"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "2"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "2"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "2"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (mnr-3|mnr-03)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-4|mnr-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "4"
+    - expect: '(?i)Enter the name of the robot that you want to disassemble'
+    - send: "mnr-4"
+    - expect: '(?i)(((mnr-4|mnr-04): (.*)Goodbye(.*)explorerCrew Size:(.*)minerCrew Size:)|(explorerCrew Size:(.*)minerCrew Size:))(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (mnr-3|mnr-03)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "4"
+    - expect: '(?i)Enter the name of the robot that you want to disassemble'
+    - send: "mnr-3"
+    - expect: '(?i)(((mnr-3|mnr-03): (.*)Goodbye(.*)explorerCrew Size:(.*)minerCrew Size:)|(explorerCrew Size:(.*)minerCrew Size:))(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move:(.*)explored area:(.*)Name: (mnr-3|mnr-03)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+
+    - expect: _EOF_
+    exit: 0
+    points: 2.5
+- case7:
+    run: ./assignment2
+    script: 
+        - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+        - send: "4"
+
+        - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+        - send: "4"
+
+        - expect: '(?i)How many explorers will you manufacture now?'
+        - send: "3"
+
+        - expect: '(?i)How many miners will you manufacture now?'
+        - send: "3"
+
+        - expect: '(?i)explorerCrew Size:3(.*)minerCrew Size:3(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed: 2.3746(.*)Durability: 3(.*)ManufactureCost: 3000(.*)MaintenanceCost: 189.506(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed: 2.16748(.*)Durability: 5(.*)ManufactureCost: 3000(.*)MaintenanceCost: 207.615(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed: 2.33678(.*)Durability: 5(.*)ManufactureCost: 3000(.*)MaintenanceCost: 192.573(.*)Can Move(.*)explored area:(.*)Name: (mnr-4|mnr-04)(.*)Speed: 1.33943(.*)Durability: 4(.*)ManufactureCost: 5000(.*)MaintenanceCost: 559.938(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-5|mnr-05)(.*)Speed: 1.42492(.*)Durability: 5(.*)ManufactureCost: 5000(.*)MaintenanceCost: 526.345(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed: 1.49684(.*)Durability: 2(.*)ManufactureCost: 5000(.*)MaintenanceCost: 501.055(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost: 24000(.*)Total maintenance cost: 0(.*)Choice:'
+        - send: "1" # first explore
+
+        - expect: '(?i)Current turn: 1(.*)Aim: 800 selenium.(.*)Collected: 0(.*)Total Search Area: 13500(.*)Explored Area: 4500(.*)3 area/s that include selenium.(.*)Choice:'
+        - send: "2" # first mine
+
+        - expect: '(?i)Current turn: 1(.*)Aim: 800 selenium.(.*)Collected: 765(.*)Total Search Area: 13500(.*)Explored Area: 4500(.*)0 area/s that include selenium.(.*)Choice:'
+        - send: "1"
+
+        - expect: '(?i)(exp-1|exp-01) can''t take(.*)(exp-2|exp-02) can''t take(.*)(exp-3|exp-03) can''t take(.*)Current turn: 1(.*)Aim: 800 selenium.(.*)Collected: 765(.*)Total Search Area: 13500(.*)Explored Area: 4500(.*)0 area/s(.*)Choice:'
+        - send: "2"
+
+        - expect: '(?i)(mnr-4|mnr-04) can''t take(.*)(mnr-5|mnr-05) can''t take(.*)(mnr-6|mnr-06) can''t take(.*)Current turn: 1(.*)Aim: 800 selenium.(.*)Collected: 765(.*)Total Search Area: 13500(.*)Explored Area: 4500(.*)0 area/s(.*)Choice:'
+        - send: "5"
+        
+        - expect: '(?i)Total maintenance cost: 2177.03(.*)Choice:'
+        - send: "7"
+
+        - expect: '(?i)Turn ends...(.*)Profit:-3227.03(.*)Expenses:26177(.*)Selenium Revenue:22950(.*)Choice:'
+        - send: "5" 
+
+        - expect: '(?i)explorerCrew Size:3(.*)minerCrew Size:3(.*)Name: (exp-1|exp-01)(.*)Speed: 2.3746(.*)Durability: 2(.*)ManufactureCost: 3000(.*)MaintenanceCost: 189.506(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed: 2.16748(.*)Durability: 4(.*)ManufactureCost: 3000(.*)MaintenanceCost: 207.615(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed: 2.33678(.*)Durability: 4(.*)ManufactureCost: 3000(.*)MaintenanceCost: 192.573(.*)Can Move(.*)explored area:(.*)Name: (mnr-4|mnr-04)(.*)Speed: 1.33943(.*)Durability: 3(.*)ManufactureCost: 5000(.*)MaintenanceCost: 559.938(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-5|mnr-05)(.*)Speed: 1.42492(.*)Durability: 4(.*)ManufactureCost: 5000(.*)MaintenanceCost: 526.345(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed: 1.49684(.*)Durability: 1(.*)ManufactureCost: 5000(.*)MaintenanceCost: 501.055(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost: 24000(.*)Total maintenance cost: 2177.03(.*)Choice:'
+        - send: "1" # second explore
+
+        - expect: '(?i)Current turn: 2(.*)Aim: 800 selenium.(.*)Collected: 765(.*)Total Search Area: 13500(.*)Explored Area: 9000(.*)1 area/s that include selenium.(.*)Choice:'
+        - send: "2" # second mine
+
+        - expect: '(?i)(mnr-5|mnr-05) can''t take(.*)(mnr-6|mnr-06) can''t take(.*)Collected: 1255(.*)0 area/s that include selenium.(.*)Choice:'
+        - send: "7" 
+
+        - expect: '(?i)Turn ends...(.*)Profit:10323.3(.*)Expenses:27326.7(.*)Selenium Revenue:37650(.*)Choice:'
+        - send: "5"
+
+        - expect: '(?i)explorerCrew Size:3(.*)minerCrew Size:2(.*)Name: (exp-1|exp-01)(.*)Speed: 2.3746(.*)Durability: 1(.*)ManufactureCost: 3000(.*)MaintenanceCost: 189.506(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed: 2.16748(.*)Durability: 3(.*)ManufactureCost: 3000(.*)MaintenanceCost: 207.615(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed: 2.33678(.*)Durability: 3(.*)ManufactureCost: 3000(.*)MaintenanceCost: 192.573(.*)Can Move(.*)explored area:(.*)Name: (mnr-4|mnr-04)(.*)Speed: 1.33943(.*)Durability: 2(.*)ManufactureCost: 5000(.*)MaintenanceCost: 559.938(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-5|mnr-05)(.*)Speed: 1.42492(.*)Durability: 3(.*)ManufactureCost: 5000(.*)MaintenanceCost: 526.345(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost: 24000(.*)Total maintenance cost: 3326.66(.*)Choice:'
+        - send: "1" # third explore
+
+        - expect: '(?i)Current turn: 3(.*)Aim: 800 selenium.(.*)Collected: 1255(.*)Total Search Area: 13500(.*)Explored Area: 13500(.*)2 area/s that include selenium.(.*)Choice:'
+        - send: "2" # third mine
+
+        - expect: '(?i)Collected: 1730(.*)0 area/s that include selenium.(.*)Choice:'
+        - send: "7"
+
+        - expect: _EOF_
+        
+
+
+    exit: 0
+    points: 10
+
+- case8: 
+    run: valgrind --leak-check=full ./assignment2 --track-origins=yes
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "5"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "5"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-5|exp-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-10|mnr-010)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+
+    - expect: '(.*)All heap blocks were freed -- no leaks are possible(.*)'
+
+
+    exit: 0
+    points: 2.5
+
+- case9: 
+    run: valgrind --leak-check=full ./assignment2 --track-origins=yes
+    script:
+    - expect: '(?i)Welcome to the Command Station Chief!(.*)Prepare your Robot Crew and start mining!(.*)Throughout the game you can expand your crew.(.*)What should be your maximum explorer crew size (1-5)?'
+    - send: "5"
+    - expect: '(?i)What should be your maximum miner crew size (1-5)?'
+    - send: "5"
+
+    - expect: '(?i)How many explorers(.*?)now?'
+    - send: "4"
+    - expect: '(?i)How many miners(.*?)now?'
+    - send: "4"
+
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "3"
+    - expect: '(?i)Type:'
+    - send: "miner"
+    - expect: '(?i)explorerCrew Size:(.*)minerCrew Size:(.*)Name: ((exp-1|exp-01)|exp-01)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-2|exp-02)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-3|exp-03)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (exp-4|exp-04)(.*)Speed:(.*)Durability:(.*)(.*)ManufactureCost:(.*)MaintenanceCost:(.*)Can Move(.*)explored area:(.*)Name: (mnr-5|mnr-05)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-6|mnr-06)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-7|mnr-07)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-8|mnr-08)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium|Can Move)(.*)Name: (mnr-9|mnr-09)(.*)Speed:(.*)Durability:(.*)ManufactureCost:(.*)MaintenanceCost:(.*)(Can Move(.*)\ngathered selenium(.*)|Can Move(.*))\nTotal manufacture cost:(.*)Total maintenance cost:(.*)Choice:'
+    - send: "8"
+    - expect: "(.*)All heap blocks were freed -- no leaks are possible(.*)"
+    exit: 0
+    points: 2.5
+
+
